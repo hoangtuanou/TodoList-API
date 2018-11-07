@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
-var Task = mongoose.model('Tasks');
+var clientMogo = require('./clientMongo');
 
-exports.list_all_tasks = function(req, res) {
-  Task.find({}, function(err, task) {
-    if (err)
-      res.send(err);
-    res.json(task);
+exports.list_all_tasks = async function(req, res) {
+  const collection = await clientMogo.connect();
+
+  collection.find({}).toArray(function(err, documents) {
+    res.send(documents);
   });
 };
 
